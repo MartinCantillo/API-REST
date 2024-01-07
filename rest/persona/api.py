@@ -1,5 +1,6 @@
 #este es para hacerlo por medio de clase
 from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.response import Response
 from .models import Persona
 from .serializer import PersonaSerializer
@@ -28,7 +29,7 @@ def Persona_api_view(request):
     if request.method =='GET':
         personas = Persona.objects.all()
         personas_serializers=PersonaSerializer(personas, many=True)
-        return  Response(personas_serializers.data)
+        return  Response(personas_serializers.data,status=status.HTTP_200_OK)
     elif request.method=='POST':
         #se descerializan los datos que vienen del request
         data=request.data#datos que vienen del frontend
@@ -38,9 +39,9 @@ def Persona_api_view(request):
             #entonces guardo la persona
             persona_serializer.save()
             #la retorno
-            return Response(persona_serializer.data)
+            return Response(persona_serializer.data, status=status.HTTP_201_CREATED)
         #sino arrojo el error
-        return Response(persona_serializer.errors)
+        return Response(persona_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 #en django rest PUT es para editar en ves de POST
 @api_view(['GET','PUT','DELETE'])
@@ -48,7 +49,7 @@ def Persona_detail_api_view(request, pk=None): #pk=none es para que sea opcional
     if request.method =='GET':
         persona=Persona.objects.filter(id=pk).first() 
         persona_serializer =PersonaSerializer(persona)   
-        return Response(persona_serializer.data)
+        return Response(persona_serializer.data,status=status.HTTP_200_OK)
     
 
     elif request.method=='PUT':
@@ -60,8 +61,8 @@ def Persona_detail_api_view(request, pk=None): #pk=none es para que sea opcional
       #valido
      if persona_serializer.is_valid():
             persona_serializer.save()
-            return Response(persona_serializer.data)
-     return Response(persona_serializer.errors)
+            return Response(persona_serializer.data,status= status.HTTP_200_OK)
+     return Response(persona_serializer.errors, status= status.HTTP_304_NOT_MODIFIED)
     elif request.method=='DELETE':
         #consulto en la bd
         persona=Persona.objects.filter(id=pk).first() 
@@ -69,8 +70,8 @@ def Persona_detail_api_view(request, pk=None): #pk=none es para que sea opcional
         if persona:
           #elimino
          persona.delete()
-         return Response('Elminado')
-        return Response('Persona no econtrada')
+         return Response('Elminado',status= status.HTTP_200_OK)
+        return Response('Persona no econtrada',status==status.HTTP_404_NOT_FOUND)
 
 
 
