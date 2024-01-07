@@ -77,10 +77,15 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DATABASES ={
+    'default' :{
+        'ENGINE' :'django.db.backends.mysql', #motor de la base de datos 
+        'NAME':'bdtest',
+        'USER':'root',  # Usuario predeterminado en XAMPP
+        #'PASSWORD':
+        'HOST': 'localhost',
+        'PORT': '3306' # Puerto predeterminado en XAMPP
+
     }
 }
 

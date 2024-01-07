@@ -13,6 +13,6 @@ class PersonaAPIView(APIView):
         personas=Persona.objects.all()
         #serializer, como personas esa quiery me va arrojar una lista , al serializer le coloco many=true
         ##personas_serializers =PersonaSerializer(personas)
-        personas_serializers =PersonaSerializer(personas, Many=True)
+        personas_serializers =PersonaSerializer(personas, many=True)
         #retorno response , en personas_serializers.data es donde se encuentra la info en .data 
         return Response(personas_serializers.data)
