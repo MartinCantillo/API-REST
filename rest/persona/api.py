@@ -43,20 +43,37 @@ def Persona_api_view(request):
         return Response(persona_serializer.errors)
     
 #en django rest PUT es para editar en ves de POST
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT','DELETE'])
 def Persona_detail_api_view(request, pk=None): #pk=none es para que sea opcional que coloquen el pk en la llamada
     if request.method =='GET':
         persona=Persona.objects.filter(id=pk).first() 
         persona_serializer =PersonaSerializer(persona)   
         return Response(persona_serializer.data)
+    
+
     elif request.method=='PUT':
      data=request.data #datos que vienen del frontend que voy a actualizar
      #luego  se consulta por pk
-    persona=Persona.objects.filter(id=pk).first() 
+     persona=Persona.objects.filter(id=pk).first() 
       #se manda el objeto al serializer ,mas los datos actualizados
-    persona_serializer = PersonaSerializer(persona,data)
-    #valido
-    if persona_serializer.is_valid():
-        persona_serializer.save()
-        return Response(persona_serializer.data)
-    return Response(persona_serializer.errors)
+     persona_serializer = PersonaSerializer(persona,data)
+      #valido
+     if persona_serializer.is_valid():
+            persona_serializer.save()
+            return Response(persona_serializer.data)
+     return Response(persona_serializer.errors)
+    elif request.method=='DELETE':
+        #consulto en la bd
+        persona=Persona.objects.filter(id=pk).first() 
+        #verifico
+        if persona:
+          #elimino
+         persona.delete()
+         return Response('Elminado')
+        return Response('Persona no econtrada')
+
+
+
+
+
+
