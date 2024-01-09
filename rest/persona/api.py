@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from .models import Persona
-from .serializer import PersonaSerializer , TestPersonaSerializer
+from .serializer import PersonaSerializer , TestPersonaSerializer,PersonasListSerializer
 #Este es para hacerlo mediante funciones
 from rest_framework.decorators import api_view
 
@@ -27,8 +27,8 @@ class PersonaAPIView(APIView):
 @api_view(['GET','POST'])
 def Persona_api_view(request):
     if request.method =='GET':
-        personas = Persona.objects.all()
-        personas_serializers=PersonaSerializer(personas, many=True)
+        personas = Persona.objects.all().values('nombre','apellido')
+        personas_serializers=PersonasListSerializer(personas, many=True)
         '''
         #haciendo la prueba con el serializadorTes
         persona1={
