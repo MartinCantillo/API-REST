@@ -29,6 +29,7 @@ def Persona_api_view(request):
     if request.method =='GET':
         personas = Persona.objects.all()
         personas_serializers=PersonaSerializer(personas, many=True)
+        '''
         #haciendo la prueba con el serializadorTes
         persona1={
             'nombre':'Cristian',
@@ -38,6 +39,7 @@ def Persona_api_view(request):
         }
         persona1_serializer=TestPersonaSerializer(persona1)
         print(f'Serializer api: {persona1_serializer}')
+        '''
         return  Response(personas_serializers.data,status=status.HTTP_200_OK)
     elif request.method=='POST':
         #se descerializan los datos que vienen del request
